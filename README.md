@@ -62,12 +62,9 @@ Add "type": "module" to package.json
 ```bash
 nano package.json
 ```
-just input at the end
+just input under version at the top 
 ```bash
-{
-  "type": "module"
-}
-
+"type": "module",
 ```
 to go down use your arrow keys 
 after adding the file use ctrl X then Y and enter 
@@ -125,45 +122,48 @@ Then paste
 ```bash
 import { Uploader } from "@irys/upload";
 import { Ethereum } from "@irys/upload-ethereum";
+import path from "path";
 
 // Initialize uploader with wallet from environment variable
 const getIrysUploader = async () => {
-  const irysUploader = await Uploader(Ethereum).withWallet(process.env.PRIVATE_KEY);
-  return irysUploader;
+  return await Uploader(Ethereum).withWallet(process.env.PRIVATE_KEY);
 };
 
-// Upload a single file
+// Get the file name from command-line arguments
+const fileName = process.argv[2];
+
+if (!fileName) {
+  console.error("Please provide a file name. Example: node upload.js myImage.png");
+  process.exit(1);
+}
+
+// Build full path (assumes file is in current folder)
+const filePath = path.join(process.cwd(), fileName);
+
 const uploadFile = async () => {
   const irysUploader = await getIrysUploader();
-  const fileToUpload = "/path/to/your/file.png"; // <-- replace with your file path
-  const tags = [{ name: "application-id", value: "MyNFTDrop" }];
-
   try {
-    const receipt = await irysUploader.uploadFile(fileToUpload, { tags });
+    const receipt = await irysUploader.uploadFile(filePath);
     console.log(`File uploaded ==> https://gateway.irys.xyz/${receipt.id}`);
   } catch (e) {
     console.log("Error when uploading: ", e);
   }
 };
 
-// Run the upload
 (async () => {
   await uploadFile();
 })();
 ```
-EDIT THAT LINE THAT SAYS 
-"const fileToUpload = "/path/to/your/file.png"; // <-- replace with your file path"
-with this but 
-```bash
-const fileToUpload = "/home/jrkenny/irys-cli/calculator.png";
-```
-remove that jrkenny and add your own ubuntu username you can see on your screen like BAKAAA
-also remove the calculator.png and instead add your own file you copied or moved in the step above 
+
 THEN CTRL X THEN Y AND ENTER 
 
 # STEP 4. Run the Upload
 ```bash
-node upload.js
+node upload.js yourFileName.png
+```
+example :
+```bash
+node upload.js bakaaa.png
 ```
 Expected Output: "File uploaded ==> https://gateway.irys.xyz/<transaction_id>"
 <img width="1648" height="860" alt="image" src="https://github.com/user-attachments/assets/be75b49c-3ae3-4c72-b015-9dab697b99e9" />
