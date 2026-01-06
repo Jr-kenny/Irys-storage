@@ -1,7 +1,7 @@
 # Irys-storage
 ## Just an easy fun way of testing out irys storage 
 
-## 1️⃣ Minimal Requirements
+## 1️⃣ Requirements
 RAM	2 GB is enough; 4 -8 GB recommended
 Storage	~200 MB for Node.js, packages, and files
 OS	Ubuntu 20.04+, any Linux distro, macOS, or Windows with Node.js
